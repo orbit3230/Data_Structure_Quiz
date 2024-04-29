@@ -7,35 +7,32 @@
 
 #define MAX_QUEUE_SIZE 100
 
-#define WORD_SIZE 101 // �߰���
-typedef char* element; // �߰���
-typedef struct { // ť Ÿ��
+#define WORD_SIZE 101
+typedef char* element;
+typedef struct {
     element data[MAX_QUEUE_SIZE];
     int  front, rear;
 } QueueType;
 
-// ���� �Լ�
+
 void error(const char* message) {
     fprintf(stderr, "%s\n", message);
     exit(1);
 }
 
-// ���� ���� ���� �Լ�
 void init_queue(QueueType* q) {
     q->front = q->rear = 0;
 }
 
-// ���� ���� ���� �Լ�
 int is_empty(QueueType* q) {
     return (q->front == q->rear);
 }
 
-// ��ȭ ���� ���� �Լ�
 int is_full(QueueType* q) {
     return ((q->rear + 1) % MAX_QUEUE_SIZE == q->front % MAX_QUEUE_SIZE);
 }
 
-// ����ť ��� �Լ�
+
 void queue_print(QueueType* q) {
     printf("QUEUE(front=%d rear=%d) = ", q->front, q->rear);
     if (!is_empty(q)) {
@@ -50,19 +47,17 @@ void queue_print(QueueType* q) {
     printf("\n");
 }
 
-// ���� �Լ�
 void enqueue(QueueType* q, element item) {
     if (is_full(q))
-        error("ť�� ��ȭ�����Դϴ�.");
+        error("Queue is full");
     q->data[(q->rear + 1) % MAX_QUEUE_SIZE] = (char*)malloc(WORD_SIZE * sizeof(char));  // �߰���
-    strcpy(q->data[(q->rear + 1) % MAX_QUEUE_SIZE], item);  // �߰���
+    strcpy(q->data[(q->rear + 1) % MAX_QUEUE_SIZE], item);  
     q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;
 }
 
-// ���� �Լ�
 element dequeue(QueueType* q) {
     if (is_empty(q))
-        error("ť�� ��������Դϴ�.");
+        error("Queue is empty");
     q->front = (q->front + 1) % MAX_QUEUE_SIZE;
     element item = q->data[q->front];
     return item;
@@ -70,13 +65,13 @@ element dequeue(QueueType* q) {
 
 element get_front(QueueType* q) {
     if (is_empty(q))
-        error("ť�� ��������Դϴ�.");
+        error("Queue is empty");
     return q->data[(q->front + 1) % MAX_QUEUE_SIZE];
 }
 
 element get_rear(QueueType* q) {
     if (is_empty(q))
-        error("ť�� ��������Դϴ�.");
+        error("Queue is empty");
     return q->data[q->rear];
 }
 
@@ -88,9 +83,6 @@ int main() {
     for (int problem = 0; problem < problem_num; problem++) {
         scanf("%d %d", &student_num, &word_num);
 
-        //string(���ڿ�)�� ������ ��� �迭
-        //���ڿ� ��ü�� char�� �迭�̶�
-        //���� �����Ͱ� �Ǿ���
         char** sentence = (char**)malloc(word_num * sizeof(char*));
         for (int word = 0; word < word_num; word++) {
             sentence[word] = (char*)malloc(WORD_SIZE * sizeof(char));
