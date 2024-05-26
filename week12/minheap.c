@@ -10,6 +10,10 @@ typedef struct HeapType {
     int heap_size;
 } HeapType;
 
+HeapType* create() {
+    return (HeapType *)malloc(sizeof(HeapType));
+}
+
 void init(HeapType *h) {
     h->heap = (Element *)malloc(sizeof(Element) * MAX_ELEMENT);
     h->heap_size = 0;
@@ -51,7 +55,7 @@ Element pop_min_heap(HeapType *h) {
 int main() {
     Element e1 = { 10 }, e2 = { 5 }, e3 = { 30 };
     Element e4, e5, e6;
-    HeapType* heap;
+    HeapType* heap = create();
     init(heap);    // 초기화
     // 삽입
     push_min_heap(heap, e1);
@@ -65,5 +69,6 @@ int main() {
     e6 = pop_min_heap(heap);
     printf("< %d > \n", e6.key);
 
+    free(heap->heap);
     free(heap);
 }
